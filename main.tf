@@ -101,7 +101,7 @@ resource "aws_route_table" "private" {
 
   vpc_id = "${local.vpc_id}"
 
-  tags = "${merge(map("Name", (var.single_nat_gateway ? "${var.name}-${var.private_subnet_suffix}" : format("%s-${var.private_subnet_suffix}-%s", var.name, element(var.azs, count.index)))), var.tags, var.private_route_table_tags)}"
+  tags = "${merge(map("Name", (var.single_nat_gateway ? "${var.name}-${var.private_subnet_suffix}" : format("%s-${var.private_subnet_suffix}-%s", var.name, element(var.azs, count.index))), "availability-zone", (var.single_nat_gateway ? "any" : element(var.azs, count.index))), var.tags, var.private_route_table_tags)}"
 
   lifecycle {
     # When attaching VPN gateways it is common to define aws_vpn_gateway_route_propagation
